@@ -1,0 +1,44 @@
+/*
+  file-name: style.css
+  used-for: styling the login form
+  created-by: Mohit Dadu
+  date:18/01/2017
+*/
+p{
+    font-size: large;
+    color: #ff00aa;
+    font-family: serif;
+}
+
+body{
+    padding: 100px;
+    border: solid gray 2px;
+	width: 100%;
+	border-radius: 10px;
+	margin: 100px auto;
+    background-color: lightblue;
+}
+
+div{
+    padding: 5px;
+}
+
+active{
+    font:large;
+    color: #00ff00;
+}
+
+#user-type{
+    height: 50px;
+    width: auto;  
+}
+.border-style{
+    border: solid thick;
+    border-color: lightblue;
+}
+.panel-form{
+    text-align:center;
+    font-weight: bold;
+    font-size: 15px;
+ 
+}

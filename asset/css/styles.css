@@ -1,0 +1,55 @@
+body {
+        background-image: url("E:\xampp\htdocs\libraryCard\asset\images/bgimage.jpg");
+        background-size: 100% auto;
+      }
+
+
+
+
+
+
+
+
+/*div.about {
+    text-align: center;
+    padding: 5px;
+    font-family: cambria;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+p {
+    display: block;
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+}
+
+.name {
+    background-color: lightblue;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-left: 100px;
+    margin-right: 100px;
+}
+
+.email {
+    background-color: lightblue;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-left: 100px;
+    margin-right: 100px;
+}
+
+.id {
+    background-color: lightblue;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-left: 100px;
+    margin-right: 100px;
+}
+
+.name-info{
+	color: red;
+}
