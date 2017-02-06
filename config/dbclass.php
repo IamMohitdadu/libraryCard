@@ -54,6 +54,7 @@
             return $result->getRecords();
         }
         
+
         public function findData($layout, $id)
         {   
             if(!$this->connDB()){
@@ -61,7 +62,7 @@
             }
 
             $request = $this->connection->newFindCommand($layout);
-            $request->addFindCriterion('Id', $id);
+            $request->addFindCriterion('cardId', $id);
             $result = $request->execute();
             $records = $result->getRecords();
             if (FileMaker::isError($records)) {
@@ -71,7 +72,8 @@
             return $result->getRecords();
         }
 
-        public function addData($layout, $name, $email, $phone)
+        // to add new data into the card database
+        public function addCard($layout, $name, $email, $phone)
         {   
             if(!$this->connDB()){
                 return false;
@@ -90,7 +92,8 @@
             }
         }
 
-        public function deleteData($dataId)
+        // function to delete the student data from database
+        public function deleteCard($dataId)
         {   
             if(!$this->connDB()){
                 return false;

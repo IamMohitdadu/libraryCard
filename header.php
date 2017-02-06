@@ -12,7 +12,7 @@
 
 
       <!-- Bootstrap CSS File  -->
-      <link rel="stylesheet" type="text/css" href="asset/vendors/css/bootstrap.css"/>
+      <link rel="stylesheet" type="text/css" href="./asset/vendors/css/bootstrap.css"/>
 
     </head>
     <body>

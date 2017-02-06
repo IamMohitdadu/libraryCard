@@ -3,15 +3,24 @@ body {
     background-size: 100% auto;
 }
 
-
-/*div.about {
+div .pull-right {
     text-align: center;
-    padding: 5px;
+    padding: 6px;
     font-family: cambria;
     font-weight: bold;
     font-size: 15px;
 }
 
+div #libraryCard {
+    text-align: center;
+    padding: 6px;
+    font-family: cambria;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+
+/*
 p {
     display: block;
     -webkit-margin-before: 1em;
@@ -47,3 +56,5 @@ p {
 .name-info{
 	color: red;
 }
+*/
+

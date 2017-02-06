@@ -31,7 +31,7 @@
 <div class="container">
   <ul class="nav nav-tabs">
     <li class="active"><a href="#home"><span style="color: black";></span>Home</a></li>
-    <li><a href="#libraryCard">Library Card</a></li>
+    <li><a href="libraryCard.php">Library Card</a></li>
   </ul>
 
   <!-- content section for Home Page -->
@@ -48,11 +48,12 @@
       <!-- To display and add new cards -->
       <div class="panel panel-default">
         <div class="panel-heading">Card Details</div>
-        <form method="post" action="">
         <table  class="table table-striped table-bordered table-hover table-condensed">
           <tr>
             <th>CARD ID</th>
             <th>NAME</th>
+            <th>EMAIL ADDRESS</th>
+            <th>PHONE NUMBER</th>
             <th colspan="3"><center>Action</center></th>
           </tr>
         <?php
@@ -66,10 +67,12 @@
             <tr>
               <td><?php echo $record->getField('cardId'); ?></td>
               <td><?php echo $record->getField('studentName'); ?></td>
+              <td><?php echo $record->getField('email'); ?></td>
+              <td><?php echo $record->getField('phoneNo'); ?></td>
               <td><button class="btn btn-success" data-toggle="modal" data-target="#view_card_modal" 
-                    id="<?php echo $record->getRecordId(); ?>" onclick="view(this.id)">
+                    id="<?php echo $record->getRecordId(); ?>">
                     <span class="glyphicon glyphicon-eye-open"></span>&nbsp;VIEW </button></td>
-              <td><a href="view.php?id=<?php echo $record->getRecordId(); ?>">
+              <td><a href="#?id=<?php echo $record->getRecordId(); ?>">
                 <span class="glyphicon glyphicon-eye-open"></span>&nbsp;VIEW</a></td>   
               <td><a href="edit.php?id=<?php echo $record->getField('Id'); ?>">
                 <span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;EDIT</a></td>
@@ -83,13 +86,7 @@
           ?>
 
         </table>
-        </form>
       </div>
-    </div>
-
-    <!-- content section for Library card page -->
-    <div id="libraryCard" class="tab-pane fade">
-      <!--   content for library card  -->
     </div>
   </div>
 </div>
@@ -105,6 +102,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="myModalLabel">Add New Card</h4>
             </div>
+
             <form method="post" action="">
               <div class="modal-body">
                 <div class="form-group">
@@ -125,7 +123,6 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <input type='submit' class="btn btn-primary" name='add' value='Add Record'>
                 <button type="button" class="btn btn-primary" onclick="addRecord()">Add Record</button>
               </div>
             </form>
@@ -179,11 +176,22 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="myModalLabel">Student Details</h4>
             </div>
+            <?php if(isset($_GET['id'])){
+                $id = $_GET['id'];
+                $records = $db->findData($id);
+                if($records) {
+                    foreach ($records as $record) { 
+                        $cardId = $record->getField('cardId');
+                        $name = $record->getField('studentName');
+                        $email = $record->getField('email');
+                        $phone = $record->getField('phone');
+                    }
+                }
+            } ?>
             <div class="modal-body">
-
                 <div class="form-group">
-                    <label for="first_name">cardId</label>
-                    <input type="text" id="first_name" placeholder="First Name" class="form-control" value="<?php echo $cardId; ?>" />
+                    <label for="first_name">cardId</label><?php echo $id; ?>
+                   <!-- <input type="text" id="first_name" placeholder="First Name" class="form-control" value="<?php echo $cardId; ?>"/>  -->
                 </div>
 
                 <div class="form-group">
