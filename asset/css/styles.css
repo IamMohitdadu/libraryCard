@@ -1,13 +1,7 @@
 body {
-        background-image: url("E:\xampp\htdocs\libraryCard\asset\images/bgimage.jpg");
-        background-size: 100% auto;
-      }
-
-
-
-
-
-
+    background-image: url("image/bgimage.jpg");
+    background-size: 100% auto;
+}
 
 
 /*div.about {
