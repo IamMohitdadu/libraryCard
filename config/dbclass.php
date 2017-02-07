@@ -37,7 +37,7 @@
         return true;
         }
 
-        // function to fetch data from database
+        // function to fetch all data from database
         public function fetchData($layout)
         {   
             if(!$this->connDB()){
@@ -54,7 +54,7 @@
             return $result->getRecords();
         }
         
-
+        // to find the particular data from database
         public function findData($layout, $id)
         {   
             if(!$this->connDB()){
@@ -105,4 +105,30 @@
             header("Location: index.php");
         }
 
+        // to edit the record 
+        public function editRecord($layout, $id, $name, $email, $phone)
+        {
+            if(!$this->connDB()){
+                return false;
+            }
+
+            $request = $this->connection->newFindCommand($layout);
+            $request->addFindCriterion('cardId', $id);
+            $result = $request->execute();
+
+            if (FileMaker::isError($result)) { 
+                return false;
+            } else {
+                $records = $result->getRecords();
+                
+                //  fetching record from database
+                foreach ($records as $record) {
+                    $record->setField('studentName', $name);
+                    $record->setField('email', $email);
+                    $record->setField('phoneNo', $phone);
+                    $record->commit();
+                    return true;
+                }
+            }
+        }
     }

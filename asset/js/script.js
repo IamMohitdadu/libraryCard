@@ -21,7 +21,10 @@ function addRecord() {
     }, function (data, status) {
         // close the popup
         $("#add_new_record_modal").modal("hide");
- 
+        
+        //to read the records from database
+        //readRecord();
+        
         // clear fields from the popup
         $("#name").val("");
         $("#email").val("");
