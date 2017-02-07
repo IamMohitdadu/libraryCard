@@ -1,55 +1,42 @@
 /*
   file-name: script.js
-  used-for: Employee form creation Assignment for mindfire training session.
+  used-for: index.php.
   created-by: Mohit Dadu
-  description: the following file is for validating and generating table using jquery.
+  date: 06/02/2017
 */
 
 
-$(function() {
+// Add Record 
+function addRecord() {
+    // get values
+    var name = $("#name").val();
+    var email = $("#email").val();
+    var phone = $("#phone").val();
  
-  var ids = ["#usr", "#psd","#cnf-psd", "#lgr"];
-  for (i = 0; i < ids.length; i++) {
-    $(ids[i]).hide();  // for hiding paragraph which displays error on html page.
-  }
-  
-  // submit form 
-  $("#form-error").on('submit', function(event) {
-    event.preventDefault();
-    var chkr = validate();  // function call for form data validation.
-    if (chkr) {
-      generate_table(chkr);  // function call for generating table.
-    }    
-  });
-  
-// function for validation
-function validate() {
-  
-  var emailid = $("#usr").val().length;
-  var password = $("#psd").val().length;
-  var cnf_password = $("#cnf-psd").val().length;
-  var user_type = $("#lgr").val().length;
+    // Add record
+    $.post("addRecord.php", {
+        name: name,
+        email: email,
+        phone: phone
+    }, function (data, status) {
+        // close the popup
+        $("#add_new_record_modal").modal("hide");
+ 
+        // clear fields from the popup
+        $("#name").val("");
+        $("#email").val("");
+        $("#phone").val("");
 
-  if(emailid < 5) {
-    $("#usr").show();
-    return false;
-  } else {
-    $("#usr").hide();
-  }
-
-  if(password < 6) {
-    $("#psd").show();
-    return false;
-  } else {
-    $("#psd").hide();
-  }
-  
-  if(cnf_password != password) {
-    $("#cnf-psd").show();
-    return false;
-  } else {
-    $("#cnf-psd").hide();
-  }
-  return true;
+        header("Location: index.php");
+    });
 }
 
+/*
+// READ records
+function readRecord() {
+    $.get("readRecord.php", {}, function (data, status) {
+        $(".records_content").html(data);
+    });
+}
+
+*/

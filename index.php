@@ -69,12 +69,8 @@
               <td><?php echo $record->getField('studentName'); ?></td>
               <td><?php echo $record->getField('email'); ?></td>
               <td><?php echo $record->getField('phoneNo'); ?></td>
-              <td><button class="btn btn-success" data-toggle="modal" data-target="#view_card_modal" 
-                    id="<?php echo $record->getRecordId(); ?>">
-                    <span class="glyphicon glyphicon-eye-open"></span>&nbsp;VIEW </button></td>
-              <td><a href="#?id=<?php echo $record->getRecordId(); ?>">
-                <span class="glyphicon glyphicon-eye-open"></span>&nbsp;VIEW</a></td>   
-              <td><a href="edit.php?id=<?php echo $record->getField('Id'); ?>">
+              
+              <td><a href="libraryCard.php?id=<?php echo $record->getField('Id'); ?>">
                 <span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;EDIT</a></td>
               <td><a href="delete.php?id=<?php echo $record->getRecordId(); ?>">
                 <span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;DELETE</a></td>
@@ -106,7 +102,7 @@
             <form method="post" action="">
               <div class="modal-body">
                 <div class="form-group">
-                    <label for="first_name">Student Name</label>
+                    <label for="name">Student Name</label>
                     <input type="text" id="name" placeholder="Student Name" class="form-control"/>
                 </div>
 
@@ -116,7 +112,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="email">Phone Number</label>
+                    <label for="phone">Phone Number</label>
                     <input type="number" id="phone" placeholder="Phone Number" class="form-control"/>
                 </div>
 
