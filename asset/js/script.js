@@ -30,8 +30,8 @@ function addRecord() {
         $("#email").val("");
         $("#phone").val("");
 
-        header("Location: index.php");
     });
+
 }
 
 /*

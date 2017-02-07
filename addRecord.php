@@ -10,6 +10,5 @@
         $phone = $_POST['phone'];
 
         $db->addCard('cardData', $name, $email, $phone);
-        header("Location: index.php");
     }
 ?>

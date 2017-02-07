@@ -18,7 +18,7 @@
   // check for getting data from home page
   if (isset($_GET['id'])) {
       $id = $_GET['id'];
-      $records = $db->findData('cardData', $id);
+      $records = $db->findCard('cardData', $id);
 
       if($records) {
           foreach ($records as $record) { 
@@ -87,10 +87,78 @@
             <span><?php echo $msg;?></span>
           </div>
         </form> 
+        <div class="row">
+        <div class="col-md-12">
+          <div class="pull-right">
+            <button class="btn btn-success" data-toggle="modal" data-target="#add_book_modal">Add Book</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 <!-- /Content Section -->
+
+
+<!-- Bootstrap Modals -->
+
+<!-- Modal - Add Books -->
+<div class="modal fade" id="add_book_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="myModalLabel">Book Details</h4>
+            </div>
+            <div class="modal-body">
+            <form  method="post" action=""  id="searchform"> 
+              <input  type="text" name="search"> 
+              <input  type="submit" name="search" id='search' value="Search">
+            </form><br>
+            <form method="post" action="">
+              <div class="panel panel-default">
+                <table  class="table table-striped table-bordered table-hover table-condensed">
+                  <tr>
+                    <th>BOOK ID</th>
+                    <th>BOOK NAME</th>
+                    <th>BOOK CATEGORY</th>
+                    <th>ADD BOOK</th>
+                  </tr>
+                <?php
+
+                  if(isset($_POST['search'])) {
+                    $searchName = $_POST['search'];
+                    $bookRecords = $db->findBook('bookData', $searchName);
+                  } else { 
+                    //Initializing the database connection
+                    $bookRecords = $db->fetchData('bookData');
+                  }
+
+                  if($bookRecords) {
+                    foreach ($bookRecords as $record) { 
+                ?>
+                    <tr>
+                      <td><?php echo $record->getField('bookId'); ?></td>
+                      <td><?php echo $record->getField('bookName'); ?></td>
+                      <td><?php echo $record->getField('bookCategory'); ?></td>               
+                      <td><input type="checkbox" name="checkbox" value=""/></td>
+                    </tr>    
+                  <?php       
+                      }
+                  }
+                  ?>
+                </table>
+              </div>
+            </form> 
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- // Modal -->
+
 
 <?php 
   // include footer

@@ -34,8 +34,11 @@
   </ul>
 
   <!-- content section for Home Page -->
+
   <div class="tab-content">
     <div id="home" class="tab-pane fade in active">
+
+      <!-- To display model for adding new card -->
       <div class="row">
         <div class="col-md-12">
           <div class="pull-right">
@@ -44,7 +47,7 @@
         </div>
       </div>
 
-      <!-- To display and add new cards -->
+      <!-- To display student cards -->
       <div class="panel panel-default">
         <div class="panel-heading">Card Details</div>
         <table  class="table table-striped table-bordered table-hover table-condensed">
@@ -79,7 +82,6 @@
               }
           }
           ?>
-
         </table>
       </div>
     </div>
@@ -121,93 +123,6 @@
                 <button type="button" class="btn btn-primary" onclick="addRecord()">Add Record</button>
               </div>
             </form>
-        </div>
-    </div>
-</div>
-<!-- // Modal -->
-
-
-<!-- Modal - Update User details -->
-<div class="modal fade" id="update_user_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Update</h4>
-            </div>
-            <div class="modal-body">
-
-                <div class="form-group">
-                    <label for="update_first_name">First Name</label>
-                    <input type="text" id="update_first_name" placeholder="First Name" class="form-control"/>
-                </div>
-
-                <div class="form-group">
-                    <label for="update_last_name">Last Name</label>
-                    <input type="text" id="update_last_name" placeholder="Last Name" class="form-control"/>
-                </div>
-
-                <div class="form-group">
-                    <label for="update_email">Email Address</label>
-                    <input type="text" id="update_email" placeholder="Email Address" class="form-control"/>
-                </div>
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" onclick="UpdateUserDetails()" >Save Changes</button>
-                <input type="hidden" id="hidden_user_id">
-            </div>
-        </div>
-    </div>
-</div>
-<!-- // Modal -->
-
-<!-- Modal - View card details -->
-<div class="modal fade" id="view_card_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Student Details</h4>
-            </div>
-            <?php if(isset($_GET['id'])){
-                $id = $_GET['id'];
-                $records = $db->findData($id);
-                if($records) {
-                    foreach ($records as $record) { 
-                        $cardId = $record->getField('cardId');
-                        $name = $record->getField('studentName');
-                        $email = $record->getField('email');
-                        $phone = $record->getField('phone');
-                    }
-                }
-            } ?>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="first_name">cardId</label><?php echo $id; ?>
-                   <!-- <input type="text" id="first_name" placeholder="First Name" class="form-control" value="<?php echo $cardId; ?>"/>  -->
-                </div>
-
-                <div class="form-group">
-                    <label for="last_name">Last Name</label>
-                    <input type="text" id="last_name" placeholder="Last Name" class="form-control"/>
-                </div>
-
-                <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <input type="email" id="email" placeholder="Email Address" class="form-control"/>
-                </div>
-
-                <div class="form-group">
-                    <label for="email">Phone Number</label>
-                    <input type="number" id="email" placeholder="Phone Number" class="form-control"/>
-                </div>
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-            </div>
         </div>
     </div>
 </div>

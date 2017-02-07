@@ -40,7 +40,7 @@
         // function to fetch all data from database
         public function fetchData($layout)
         {   
-            if(!$this->connDB()){
+            if(!$this->connDB()) {
                 return false;
             }
 
@@ -55,9 +55,9 @@
         }
         
         // to find the particular data from database
-        public function findData($layout, $id)
+        public function findCard($layout, $id)
         {   
-            if(!$this->connDB()){
+            if(!$this->connDB()) {
                 return false;
             }
 
@@ -75,7 +75,7 @@
         // to add new data into the card database
         public function addCard($layout, $name, $email, $phone)
         {   
-            if(!$this->connDB()){
+            if(!$this->connDB()) {
                 return false;
             }
 
@@ -95,7 +95,7 @@
         // function to delete the student data from database
         public function deleteCard($dataId)
         {   
-            if(!$this->connDB()){
+            if(!$this->connDB()) {
                 return false;
             }
 
@@ -108,7 +108,10 @@
         // to edit the record 
         public function editRecord($layout, $id, $name, $email, $phone)
         {
-            if(!$this->connDB()){
+            //$layout, $name, $email are of string and $id, $phone are of integer type.
+
+            //checking the connection with the database.
+            if(!$this->connDB()) {
                 return false;
             }
 
@@ -131,4 +134,27 @@
                 }
             }
         }
+
+        // to find the book from database 
+        public function findBook($layout, $searchName)
+        {   
+            //$layout and $searchName are of string type.
+
+            //checking the connection with the database.
+            if(!$this->connDB()) {
+                return false;
+            }
+
+            $request = $this->connection->newFindCommand($layout);
+            $request->addFindCriterion('bookName', $searchName);
+            $result = $request->execute();
+            $records = $result->getRecords();
+            if (FileMaker::isError($records)) {
+                echo $records->getMessage();
+                return false;
+            } 
+            return $result->getRecords();
+        }
     }
+
+
