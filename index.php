@@ -28,10 +28,10 @@
     </div>
   </div>
 </nav>
-<div class="container">
-  <ul class="nav nav-tabs">
-    <li class="active"><a><span style="color: black";></span>Home</a></li>
-  </ul>
+<div class="container ">
+  <ol class="breadcrumb">
+    <li><a href="#">Home</a></li>    
+  </ol>
 
   <!-- content section for Home Page -->
 
@@ -74,7 +74,7 @@
               
               <td><a href="libraryCard.php?id=<?php echo $record->getField('cardId'); ?>">
                 <span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;EDIT</a></td>
-              <td><a href="delete.php?id=<?php echo $record->getRecordId(); ?>">
+              <td><a href="deleteCard.php?id=<?php echo $record->getRecordId(); ?>">
                 <span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;DELETE</a></td>
             </tr>
                 

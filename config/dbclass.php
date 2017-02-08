@@ -64,6 +64,9 @@
             $request = $this->connection->newFindCommand($layout);
             $request->addFindCriterion('cardId', $id);
             $result = $request->execute();
+            if (FileMaker::isError($result)) {
+                return false;
+            } 
             $records = $result->getRecords();
             if (FileMaker::isError($records)) {
                 return false;
@@ -155,12 +158,34 @@
             return $result->getRecords();
         }
 
+        // function to delete the student data from database
+        public function deleteIssuedBook($dataId)
+        {   
+            if(!$this->connDB()) {
+                return false;
+            }
+
+            $id = $dataId;
+            $deleteRecord = $this->connection->newDeleteCommand('cardBook', $id);
+            $result = $deleteRecord->execute();
+            header("Location: index.php");
+        }
+
         public function issueBook($layout, $cardId, $bookId)
         {
             if(!$this->connDB()) {
                 return false;
             }
-
+            $request = $this->connection->newFindCommand($layout);
+            $request->addFindCriterion('cardId', $cardId);
+            $result = $request->execute();
+            if (FileMaker::isError($result)) {
+                return false;
+            } 
+            $records = $result->getRecords();
+            if (FileMaker::isError($records)) {
+                return false;
+            } 
             $record = $this->connection->createRecord($layout);
             $record->setField('cardId', $cardId);
             $record->setField('bookId', $bookId);

@@ -52,7 +52,7 @@
       if(!empty($_POST['check_list'])) {
           // Counting number of checked checkboxes.
           $checked_count = count($_POST['check_list']);
-          if ($checked_count <= 4) {
+          if (($checked_count <= 4) and ($countBook <= 4) ) {
                 // Loop to store and display values of individual checked checkbox.
               foreach($_POST['check_list'] as $selectedBook) {
                   $records = $db->issueBook('cardBook', $id, $selectedBook);
@@ -83,10 +83,10 @@
   </div>
 </nav>
 <div class="container">
-  <ul class="nav nav-tabs">
-    <li><a href="index.php"><span style="color: black";></span>Home</a></li>
-    <li class="active"><a href="">Library Card</a></li>
-  </ul>
+  <ol class="breadcrumb">
+    <li><a href="index.php">Home</a></li>
+    <li><a href="#">Library Card</a></li>      
+  </ol>
   <!-- content section for student card details.  -->
   <div class="tab-content">
     <!-- content section for Library card page -->
@@ -95,6 +95,7 @@
       <div class="row">
         <div class="col-md-12">
           <div class="pull-right">
+
             <button class="btn btn-success" data-toggle="modal" data-target="#add_book_modal">Add Book</button>
           </div>
         </div>
@@ -106,11 +107,11 @@
         <div class="panel-heading">Card Details</div>
         <dl class="dl-horizontal">
           <dt>Student Name</dt>
-          <dd><input type="text" name="name" value="<?php echo $name; ?>" /></dd>
+          <dd><input type="text" name="name" value="<?php echo $name; ?>" /></dd><br>
           <dt>Email Address</dt>
-          <dd><input type="text" name="email" value="<?php echo $email; ?>" /></dd>
+          <dd><input type="text" name="email" value="<?php echo $email; ?>" /></dd><br>
           <dt>Phone Number</dt>
-          <dd><input type="text" name="phone" value="<?php echo $phone; ?>" /></dd>
+          <dd><input type="text" name="phone" value="<?php echo $phone; ?>" /></dd><br>
         </dl>
         <input class="btn btn-primary btn-block" type= 'submit' name='save' id='save' value='save'>
         <span><?php echo $msg;?></span>
@@ -130,32 +131,39 @@
 
           //Initializing the database connection
           $records = $db->findCard('cardBook', $id);
-
+          $countBook = 0;
           if($records) {
               foreach ($records as $record) { 
+
                   $bookRecords = $record->getRelatedSet('bookData');
                   if (FileMaker::isError($bookRecords)) {
-                      $msg = "Sorry no data found.";
-                  } else {
+                  } else { 
+                      
                       foreach ($bookRecords as $bookRecord) {
+
                           $bookId = $bookRecord->getField('bookData::bookId');
         ?>
             <tr>
               <td><?php echo $bookRecord->getField('bookData::bookId'); ?></td>
               <td><?php echo $bookRecord->getField('bookData::bookName'); ?></td>
               <td><?php echo $bookRecord->getField('bookData::bookCategory'); ?></td>
-              <td><button type="button" class="btn btn-danger" onclick="returnBook($bookId, $id)">return</button></td>
-             
+              <td><a href="deleteIssuedBook.php?id=<?php echo $record->getRecordId(); ?>">
+                <span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;DELETE</a></td>          
             </tr>
                 
           <?php  
                      }
                   }     
+              $countBook++; }
+              if ($countBook == 0){
+                $msg = "no record found";
               }
-          }
+
+          } else { $msg = "No Record Found";}
           ?>
-      </table>
+      </table><span><strong><?php echo $msg;?></strong></span>
     </div>
+    
   </div>
 </div>
 <!-- /Content Section -->
@@ -172,11 +180,10 @@
         <h4 class="modal-title" id="myModalLabel">Book Details</h4>
       </div>
       <div class="modal-body">
-        <form  method="post" action=""  id="searchform"> 
+        <form  method="post" action="" > 
           <input  type="text" name="search"> 
           <input  type="submit" name="search" id='search' value="Search">
-        </form><br>
-        <form method="post" action="">
+          <br>
           <div class="panel panel-default">
             <table  class="table table-striped table-bordered table-hover table-condensed">
               <tr>
