@@ -66,7 +66,6 @@
             $result = $request->execute();
             $records = $result->getRecords();
             if (FileMaker::isError($records)) {
-                echo $records->getMessage();
                 return false;
             } 
             return $result->getRecords();
@@ -155,6 +154,24 @@
             } 
             return $result->getRecords();
         }
+
+        public function issueBook($layout, $cardId, $bookId)
+        {
+            if(!$this->connDB()) {
+                return false;
+            }
+
+            $record = $this->connection->createRecord($layout);
+            $record->setField('cardId', $cardId);
+            $record->setField('bookId', $bookId);
+            $result = $record->commit();            
+            if (FileMaker::isError($result)) { 
+                return false;
+            } else {
+                return true;
+            }
+        }
+
     }
 
 

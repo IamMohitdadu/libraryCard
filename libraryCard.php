@@ -1,11 +1,11 @@
  <?php
   
- /**
-   * file-name: index.php
-   * created-by: Mohit Dadu
-   * description: it is the php file home page to display and add library cards.
-   * date:03/02/2017
-   */
+/**
+* file-name: index.php
+* created-by: Mohit Dadu
+* description: it is the php file home page to display and add library cards.
+* date:03/02/2017
+*/
 
   $pageTitle = "home";
   include_once 'header.php';
@@ -18,6 +18,7 @@
   // check for getting data from home page
   if (isset($_GET['id'])) {
       $id = $_GET['id'];
+
       $records = $db->findCard('cardData', $id);
 
       if($records) {
@@ -31,7 +32,7 @@
       }
   }
  
- // to save the updated student details
+    // to save the updated student details
   if(isset($_POST['save'])) {
       $name = $_POST['name'];
       $email = $_POST['email'];
@@ -40,10 +41,31 @@
       $records = $db->editRecord('cardData', $id, $name, $email, $phone);
       
       if($records){
-        $msg = "Record Updated Successfully ";
+          $msg = "Record Updated Successfully ";
       } else {
-        $msg = "Failed to Update. Please Try Again....";
+          $msg = "Failed to Update. Please Try Again....";
       }
+  }
+
+  // for issuing book to the card
+  if(isset($_POST['issueBook'])) {
+      if(!empty($_POST['check_list'])) {
+          // Counting number of checked checkboxes.
+          $checked_count = count($_POST['check_list']);
+          if ($checked_count <= 4) {
+                // Loop to store and display values of individual checked checkbox.
+              foreach($_POST['check_list'] as $selectedBook) {
+                  $records = $db->issueBook('cardBook', $id, $selectedBook);
+              }
+              if($records) {
+                  $msg = $checked_count."Books Issued ";
+              } else {
+                  $msg = "Failed to Update. Please Try Again....";
+              }
+          } else {
+            $msg = "You exceded the issued limits. please add maximum four books.";
+          }
+      } 
   }
 
 ?>
@@ -65,35 +87,74 @@
     <li><a href="index.php"><span style="color: black";></span>Home</a></li>
     <li class="active"><a href="">Library Card</a></li>
   </ul>
-
-  <!-- content section for Home Page -->
+  <!-- content section for student card details.  -->
   <div class="tab-content">
-      <!-- content section for Library card page -->
-      <div id="libraryCard" class="tab-pane fade in active">
-        <!--   content for library card  -->
-        <!-- display and can edit details of library card -->
-        <form method="post" action="">
-          <div class="panel panel-default">
-            <div class="panel-heading">Card Details</div>
-            <dl class="dl-horizontal">
-              <dt>Student Name</dt>
-              <dd><input type="text" name="name" value="<?php echo $name; ?>" /></dd>
-              <dt>Email Address</dt>
-              <dd><input type="text" name="email" value="<?php echo $email; ?>" /></dd>
-              <dt>Phone Number</dt>
-              <dd><input type="text" name="phone" value="<?php echo $phone; ?>" /></dd>
-            </dl>
-            <input class="btn btn-primary btn-block" type= 'submit' name='save' id='save' value='save'>
-            <span><?php echo $msg;?></span>
-          </div>
-        </form> 
-        <div class="row">
+    <!-- content section for Library card page -->
+    <div id="libraryCard" class="tab-pane fade in active">
+      <!--   content for library card  -->
+      <div class="row">
         <div class="col-md-12">
           <div class="pull-right">
             <button class="btn btn-success" data-toggle="modal" data-target="#add_book_modal">Add Book</button>
           </div>
         </div>
       </div>
+    </div>
+    <!-- display and can edit details of library card -->
+    <form method="post" action="">
+      <div class="panel panel-default" style="width: 40%;">
+        <div class="panel-heading">Card Details</div>
+        <dl class="dl-horizontal">
+          <dt>Student Name</dt>
+          <dd><input type="text" name="name" value="<?php echo $name; ?>" /></dd>
+          <dt>Email Address</dt>
+          <dd><input type="text" name="email" value="<?php echo $email; ?>" /></dd>
+          <dt>Phone Number</dt>
+          <dd><input type="text" name="phone" value="<?php echo $phone; ?>" /></dd>
+        </dl>
+        <input class="btn btn-primary btn-block" type= 'submit' name='save' id='save' value='save'>
+        <span><?php echo $msg;?></span>
+      </div>
+    </form> 
+    <!-- content section for issued book to the student.  -->
+    <div class="panel panel-default">
+      <div class="panel-heading">Issued Books</div>
+      <table  class="table table-striped table-bordered table-hover table-condensed">
+        <tr>
+          <th>BOOK ID</th>
+          <th>BOOK NAME</th>
+          <th>BOOK CATEGORY</th>
+          <th>RETURN BOOK</th>
+        </tr>
+        <?php
+
+          //Initializing the database connection
+          $records = $db->findCard('cardBook', $id);
+
+          if($records) {
+              foreach ($records as $record) { 
+                  $bookRecords = $record->getRelatedSet('bookData');
+                  if (FileMaker::isError($bookRecords)) {
+                      $msg = "Sorry no data found.";
+                  } else {
+                      foreach ($bookRecords as $bookRecord) {
+                          $bookId = $bookRecord->getField('bookData::bookId');
+        ?>
+            <tr>
+              <td><?php echo $bookRecord->getField('bookData::bookId'); ?></td>
+              <td><?php echo $bookRecord->getField('bookData::bookName'); ?></td>
+              <td><?php echo $bookRecord->getField('bookData::bookCategory'); ?></td>
+              <td><button type="button" class="btn btn-danger" onclick="returnBook($bookId, $id)">return</button></td>
+             
+            </tr>
+                
+          <?php  
+                     }
+                  }     
+              }
+          }
+          ?>
+      </table>
     </div>
   </div>
 </div>
@@ -104,58 +165,59 @@
 
 <!-- Modal - Add Books -->
 <div class="modal fade" id="add_book_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <h4 class="modal-title" id="myModalLabel">Book Details</h4>
-            </div>
-            <div class="modal-body">
-            <form  method="post" action=""  id="searchform"> 
-              <input  type="text" name="search"> 
-              <input  type="submit" name="search" id='search' value="Search">
-            </form><br>
-            <form method="post" action="">
-              <div class="panel panel-default">
-                <table  class="table table-striped table-bordered table-hover table-condensed">
-                  <tr>
-                    <th>BOOK ID</th>
-                    <th>BOOK NAME</th>
-                    <th>BOOK CATEGORY</th>
-                    <th>ADD BOOK</th>
-                  </tr>
-                <?php
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Book Details</h4>
+      </div>
+      <div class="modal-body">
+        <form  method="post" action=""  id="searchform"> 
+          <input  type="text" name="search"> 
+          <input  type="submit" name="search" id='search' value="Search">
+        </form><br>
+        <form method="post" action="">
+          <div class="panel panel-default">
+            <table  class="table table-striped table-bordered table-hover table-condensed">
+              <tr>
+                <th>BOOK ID</th>
+                <th>BOOK NAME</th>
+                <th>BOOK CATEGORY</th>
+                <th>ADD BOOK</th>
+              </tr>
+            <?php
 
-                  if(isset($_POST['search'])) {
-                    $searchName = $_POST['search'];
-                    $bookRecords = $db->findBook('bookData', $searchName);
-                  } else { 
-                    //Initializing the database connection
-                    $bookRecords = $db->fetchData('bookData');
-                  }
+              if(isset($_POST['search'])) {
+                $searchName = $_POST['search'];
+                $bookRecords = $db->findBook('bookData', $searchName);
+              } else { 
+                //Initializing the database connection
+                $bookRecords = $db->fetchData('bookData');
+              }
 
-                  if($bookRecords) {
-                    foreach ($bookRecords as $record) { 
-                ?>
-                    <tr>
-                      <td><?php echo $record->getField('bookId'); ?></td>
-                      <td><?php echo $record->getField('bookName'); ?></td>
-                      <td><?php echo $record->getField('bookCategory'); ?></td>               
-                      <td><input type="checkbox" name="checkbox" value=""/></td>
-                    </tr>    
-                  <?php       
-                      }
+              if($bookRecords) {
+                foreach ($bookRecords as $record) { 
+            ?>
+                <tr>
+                  <td><?php echo $record->getField('bookId'); ?></td>
+                  <td><?php echo $record->getField('bookName'); ?></td>
+                  <td><?php echo $record->getField('bookCategory'); ?></td>               
+                  <td><input type="checkbox" name="check_list[]" value="<?php echo $record->getField('bookId');?>"/></td>
+                </tr>    
+              <?php       
                   }
-                  ?>
-                </table>
-              </div>
-            </form> 
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-            </div>
-        </div>
+              }
+              ?>
+            </table>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <input type="submit" class="btn btn-primary" name="issueBook" value="Issue Book">
+          </div>
+        </form> 
+      </div>
     </div>
+  </div>
 </div>
 <!-- // Modal -->
 

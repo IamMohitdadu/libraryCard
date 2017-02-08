@@ -19,6 +19,10 @@ div #libraryCard {
     font-size: 20px;
 }
 
+div #panel {
+    width: 30%;
+}
+
 
 /*
 p {

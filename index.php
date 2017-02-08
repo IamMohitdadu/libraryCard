@@ -120,6 +120,7 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <!-- addRecord method defined in script.js file -->
                 <button type="button" class="btn btn-primary" onclick="addRecord()">Add Record</button>
               </div>
             </form>
