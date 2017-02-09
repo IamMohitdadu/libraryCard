@@ -144,9 +144,8 @@ if(isset($_POST['issueBook'])) {
               <td><?php echo $bookRecord->getField('bookData::bookId'); ?></td>
               <td><?php echo $bookRecord->getField('bookData::bookName'); ?></td>
               <td><?php echo $bookRecord->getField('bookData::bookCategory'); ?></td>
-              <td><button name="return" id="return" onclick="deleteIssuedBook(<?php echo $record->getRecordId(); ?>);">
-                <span class=" glyphicon glyphicon-trash"></span>&nbsp;&nbsp;return book
-                </button></td>     
+              <td><a href="deleteIssuedBook.php?id=<?php echo $record->getRecordId(); ?>">
+                <span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;Return Book</a></td>   
             </tr>
           <?php  
                      }

@@ -40,19 +40,6 @@ function addRecord() {
     });
 }
 
-
-// remove the issued book from card. Here id is of integer type.
-function deleteIssuedBook(id) {
-    if (window.XMLHttpRequest) {
-        // code for IE7+, Firefox, Chrome, Opera, Safari
-        xmlhttp=new XMLHttpRequest();
-    } else {  // code for IE6, IE5
-        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-    }
-    xmlhttp.open("GET", "deleteIssuedBook.php?id=" + id, true);
-    xmlhttp.send();
-}
-
 // search the book from database. str is of string type.
 function showResult(str) {
     if (str.length==0) { 
