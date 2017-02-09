@@ -1,4 +1,4 @@
- <?php
+<?php
   
 /**
 * file-name: index.php
@@ -7,67 +7,63 @@
 * date:03/02/2017
 */
 
-  $pageTitle = "home";
-  include_once 'header.php';
+$pageTitle = "home";
+include_once 'header.php';
 
-  // to connect the database
-  include("./config/config.php");
+// to connect the database
+include("./config/config.php");
 
-  $msg="";
+$msg = "";
 
-  // check for getting data from home page
-  if (isset($_GET['id'])) {
-      $id = $_GET['id'];
+// check for getting data from home page
+if (isset($_GET['id'])) {
+    $id = $_GET['id'];
+    $records = $db->findCard('cardData', $id);
+    if($records) {
+        foreach ($records as $record) { 
+            $name = $record->getField('studentName');
+            $email = $record->getField('email');
+            $phone = $record->getField('phoneNo');
+        }
+    } else {
+        $msg = "No Record Found";
+    }
+}
 
-      $records = $db->findCard('cardData', $id);
+// to save the updated student details
+if(isset($_POST['save'])) {
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $phone = $_POST['phone'];
+    $records = $db->editRecord('cardData', $id, $name, $email, $phone);
+    
+    if($records){
+        $msg = "Record Updated Successfully ";
+    } else {
+        $msg = "Failed to Update. Please Try Again....";
+    }
+}
 
-      if($records) {
-          foreach ($records as $record) { 
-              $name = $record->getField('studentName');
-              $email = $record->getField('email');
-              $phone = $record->getField('phoneNo');
-          }
-      } else {
-          $msg = "No Record Found";
-      }
-  }
- 
-    // to save the updated student details
-  if(isset($_POST['save'])) {
-      $name = $_POST['name'];
-      $email = $_POST['email'];
-      $phone = $_POST['phone'];
-
-      $records = $db->editRecord('cardData', $id, $name, $email, $phone);
-      
-      if($records){
-          $msg = "Record Updated Successfully ";
-      } else {
-          $msg = "Failed to Update. Please Try Again....";
-      }
-  }
-
-  // for issuing book to the card
-  if(isset($_POST['issueBook'])) {
-      if(!empty($_POST['check_list'])) {
-          // Counting number of checked checkboxes.
-          $checked_count = count($_POST['check_list']);
-          if (($checked_count <= 4) and ($countBook <= 4) ) {
-                // Loop to store and display values of individual checked checkbox.
-              foreach($_POST['check_list'] as $selectedBook) {
-                  $records = $db->issueBook('cardBook', $id, $selectedBook);
-              }
-              if($records) {
-                  $msg = $checked_count."Books Issued ";
-              } else {
-                  $msg = "Failed to Update. Please Try Again....";
-              }
-          } else {
-            $msg = "You exceded the issued limits. please add maximum four books.";
-          }
-      } 
-  }
-
+// for issuing book to the card
+if(isset($_POST['issueBook'])) {
+    if(!empty($_POST['check_list'])) {
+        // Counting number of checked checkboxes.
+        $checked_count = count($_POST['check_list']);
+        if ($checked_count <= 4) {
+              // Loop to store and display values of individual checked checkbox.
+            foreach($_POST['check_list'] as $selectedBook) {
+                $records = $db->issueBook('cardBook', $id, $selectedBook);
+            }
+            if($records) {
+                $msg = $checked_count."Books Issued ";
+            } else {
+                $msg = "Failed to Update. Please Try Again....";
+            }
+        } else {
+          $msg = "You exceded the issued limits. please add maximum four books.";
+        }
+    } 
+}
 ?>
 <!-- Content Section -->
 <nav class="navbar navbar-default col-md-12">
@@ -88,37 +84,42 @@
     <li><a href="#">Library Card</a></li>      
   </ol>
   <!-- content section for student card details.  -->
-  <div class="tab-content">
+  <div class="container col-md-12">
     <!-- content section for Library card page -->
-    <div id="libraryCard" class="tab-pane fade in active">
-      <!--   content for library card  -->
-      <div class="row">
-        <div class="col-md-12">
-          <div class="pull-right">
-
-            <button class="btn btn-success" data-toggle="modal" data-target="#add_book_modal">Add Book</button>
+    <div class="row">
+      <div class="col-md-5">
+        <!-- display and can edit details of library card -->
+        <form method="post" action="">
+          <div class="panel panel-default">
+            <div class="panel-heading">Card Details</div><br>
+            <dl class="dl-horizontal">
+              <dt>Student Name</dt>
+              <dd><input type="text" name="name" value="<?php echo $name; ?>" /></dd><br>
+              <dt>Email Address</dt>
+              <dd><input type="text" name="email" value="<?php echo $email; ?>" /></dd><br>
+              <dt>Phone Number</dt>
+              <dd><input type="text" name="phone" value="<?php echo $phone; ?>" /></dd><br>
+            </dl>
+            <input class="btn btn-primary btn-block" type='submit' name='save' id='save' value='save'>
+            <span><?php echo $msg;?></span>
           </div>
+        </form> 
+      </div>
+      <div class="col-md-7">
+        <div class="col-md-9">
+          <form>
+            <input type="text" size="50" onkeyup="showResult(this.value)" placeholder="Enter Book Name">
+            <div id="livesearch"></div>
+          </form>
+        </div>
+        <div class="col-md-3">
+          <button class="btn btn-success btn-md" data-toggle="modal" data-target="#add_book_modal">All Books</button>
         </div>
       </div>
     </div>
-    <!-- display and can edit details of library card -->
-    <form method="post" action="">
-      <div class="panel panel-default" style="width: 40%;">
-        <div class="panel-heading">Card Details</div>
-        <dl class="dl-horizontal">
-          <dt>Student Name</dt>
-          <dd><input type="text" name="name" value="<?php echo $name; ?>" /></dd><br>
-          <dt>Email Address</dt>
-          <dd><input type="text" name="email" value="<?php echo $email; ?>" /></dd><br>
-          <dt>Phone Number</dt>
-          <dd><input type="text" name="phone" value="<?php echo $phone; ?>" /></dd><br>
-        </dl>
-        <input class="btn btn-primary btn-block" type= 'submit' name='save' id='save' value='save'>
-        <span><?php echo $msg;?></span>
-      </div>
-    </form> 
-    <!-- content section for issued book to the student.  -->
-    <div class="panel panel-default">
+    <!-- content section for 
+     book to the student.  -->
+    <div class="panel panel-default" id="issued_book">
       <div class="panel-heading">Issued Books</div>
       <table  class="table table-striped table-bordered table-hover table-condensed">
         <tr>
@@ -128,39 +129,37 @@
           <th>RETURN BOOK</th>
         </tr>
         <?php
-
           //Initializing the database connection
           $records = $db->findCard('cardBook', $id);
           $countBook = 0;
           if($records) {
               foreach ($records as $record) { 
-
                   $bookRecords = $record->getRelatedSet('bookData');
                   if (FileMaker::isError($bookRecords)) {
                   } else { 
-                      
                       foreach ($bookRecords as $bookRecord) {
-
                           $bookId = $bookRecord->getField('bookData::bookId');
         ?>
             <tr>
               <td><?php echo $bookRecord->getField('bookData::bookId'); ?></td>
               <td><?php echo $bookRecord->getField('bookData::bookName'); ?></td>
               <td><?php echo $bookRecord->getField('bookData::bookCategory'); ?></td>
-              <td><a href="deleteIssuedBook.php?id=<?php echo $record->getRecordId(); ?>">
-                <span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;DELETE</a></td>          
+              <td><button name="return" id="return" onclick="deleteIssuedBook(<?php echo $record->getRecordId(); ?>);">
+                <span class=" glyphicon glyphicon-trash"></span>&nbsp;&nbsp;return book
+                </button></td>     
             </tr>
-                
           <?php  
                      }
                   }     
-              $countBook++; }
+                  $countBook++;
+              }
               if ($countBook == 0){
                 $msg = "no record found";
               }
-
-          } else { $msg = "No Record Found";}
-          ?>
+          } else { 
+              $msg = "No Record Found";
+          }
+        ?>
       </table><span><strong><?php echo $msg;?></strong></span>
     </div>
     
@@ -181,10 +180,7 @@
       </div>
       <div class="modal-body">
         <form  method="post" action="" > 
-          <input  type="text" name="search"> 
-          <input  type="submit" name="search" id='search' value="Search">
-          <br>
-          <div class="panel panel-default">
+          <div class="panel panel-default"><br>
             <table  class="table table-striped table-bordered table-hover table-condensed">
               <tr>
                 <th>BOOK ID</th>
@@ -193,7 +189,7 @@
                 <th>ADD BOOK</th>
               </tr>
             <?php
-
+            
               if(isset($_POST['search'])) {
                 $searchName = $_POST['search'];
                 $bookRecords = $db->findBook('bookData', $searchName);
@@ -201,7 +197,6 @@
                 //Initializing the database connection
                 $bookRecords = $db->fetchData('bookData');
               }
-
               if($bookRecords) {
                 foreach ($bookRecords as $record) { 
             ?>
@@ -213,7 +208,8 @@
                 </tr>    
               <?php       
                   }
-              }
+              } 
+              
               ?>
             </table>
           </div>

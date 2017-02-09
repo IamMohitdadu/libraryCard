@@ -1,17 +1,17 @@
  <?php
   
- /**
-   * file-name: index.php
-   * created-by: Mohit Dadu
-   * description: it is the php file home page to display and add library cards.
-   * date:03/02/2017
-   */
+/**
+ * file-name: index.php
+ * created-by: Mohit Dadu
+ * description: it is the php file home page to display and add library cards.
+ * date:03/02/2017
+ */
 
-  $pageTitle = "home";
-  include_once 'header.php';
+$pageTitle = "home";
+include_once 'header.php';
 
-  // to connect the database
-  include("./config/config.php");
+// to connect the database
+include("./config/config.php");
 
 ?>
 
@@ -74,7 +74,8 @@
               
               <td><a href="libraryCard.php?id=<?php echo $record->getField('cardId'); ?>">
                 <span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;EDIT</a></td>
-              <td><a href="deleteCard.php?id=<?php echo $record->getRecordId(); ?>">
+              <td><a onclick='javascript:confirmationDelete($(this)); return false;' 
+                href="deleteCard.php?id=<?php echo $record->getRecordId(); ?>">
                 <span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;DELETE</a></td>
             </tr>
                 
@@ -84,6 +85,7 @@
           ?>
         </table>
       </div>
+      <div id="show"></div>
     </div>
   </div>
 </div>

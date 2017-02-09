@@ -159,6 +159,7 @@
         }
 
         // function to delete the student data from database
+        // here dataId is integer type
         public function deleteIssuedBook($dataId)
         {   
             if(!$this->connDB()) {
@@ -168,24 +169,17 @@
             $id = $dataId;
             $deleteRecord = $this->connection->newDeleteCommand('cardBook', $id);
             $result = $deleteRecord->execute();
-            header("Location: index.php");
+            return true;
         }
 
+        // to issue the book to the particular student
+        // here cardId and bookId is integer type
         public function issueBook($layout, $cardId, $bookId)
         {
             if(!$this->connDB()) {
                 return false;
             }
-            $request = $this->connection->newFindCommand($layout);
-            $request->addFindCriterion('cardId', $cardId);
-            $result = $request->execute();
-            if (FileMaker::isError($result)) {
-                return false;
-            } 
-            $records = $result->getRecords();
-            if (FileMaker::isError($records)) {
-                return false;
-            } 
+             
             $record = $this->connection->createRecord($layout);
             $record->setField('cardId', $cardId);
             $record->setField('bookId', $bookId);
@@ -195,6 +189,36 @@
             } else {
                 return true;
             }
+        }
+        
+        // to search book from the book data 
+        public function searchBook($name)
+        {
+            //checking the connection with the database.
+            if(!$this->connDB()) {
+                return false;
+            }
+
+            $request = $this->connection->newFindCommand('bookData');
+            $request->addFindCriterion('bookName', $name);
+            $result = $request->execute();
+            if (FileMaker::isError($result)) {
+                return false;
+            } 
+            $records = $result->getRecords();
+            if (FileMaker::isError($records)) {
+                return false;
+            } 
+            return $result->getRecords();
+        }
+
+
+        // function to sanitize the user input data
+        function Sanitize($data) {
+            $retvar = trim($data);
+            $retvar = strip_tags($retvar);
+            $retvar = htmlspecialchars($retvar);
+            return $retvar;
         }
 
     }

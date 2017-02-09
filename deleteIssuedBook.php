@@ -8,10 +8,10 @@
 * date:06/02/2017
 */
 
+header('Content_Type:text/xml');
+
 include("./config/config.php");
 
-if(isset($_GET['id'])){
-	$id = $_GET['id'];
-
-	$db->deleteIssuedBook($id);
-}
+$id = $_GET['id'];
+$db->deleteIssuedBook($id);
+header('Location: libraryCard.php?id=26');
