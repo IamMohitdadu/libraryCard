@@ -34,7 +34,6 @@ include("./config/config.php");
   </ol>
 
   <!-- content section for Home Page -->
-
   <div class="tab-content">
     <div id="home" class="tab-pane fade in active">
 
@@ -47,7 +46,7 @@ include("./config/config.php");
         </div>
       </div>
 
-      <!-- To display student cards -->
+      <!-- To display the list of students card -->
       <div class="panel panel-default">
         <div class="panel-heading">Card Details</div>
         <table  class="table table-striped table-bordered table-hover table-condensed">
@@ -58,31 +57,34 @@ include("./config/config.php");
             <th>PHONE NUMBER</th>
             <th colspan="3"><center>Action</center></th>
           </tr>
-        <?php
 
-          //Initializing the database connection
-          $records = $db->fetchData('cardData');
+          <?php
 
-          if($records) {
-            foreach ($records as $record) { 
-        ?>
-            <tr>
-              <td><?php echo $record->getField('cardId'); ?></td>
-              <td><?php echo $record->getField('studentName'); ?></td>
-              <td><?php echo $record->getField('email'); ?></td>
-              <td><?php echo $record->getField('phoneNo'); ?></td>
-              
-              <td><a href="libraryCard.php?id=<?php echo $record->getField('cardId'); ?>">
-                <span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;EDIT</a></td>
-              <td><a onclick='javascript:confirmationDelete($(this)); return false;' 
-                href="deleteCard.php?id=<?php echo $record->getRecordId(); ?>">
-                <span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;DELETE</a></td>
-            </tr>
+            //Initializing the database connection
+            $records = $db->fetchData('cardData');
+
+            if($records) {
+              foreach ($records as $record) { 
+          ?>
+
+          <tr>
+            <td><?php echo $record->getField('cardId'); ?></td>
+            <td><?php echo $record->getField('studentName'); ?></td>
+            <td><?php echo $record->getField('email'); ?></td>
+            <td><?php echo $record->getField('phoneNo'); ?></td>
+            
+            <td><a href="libraryCard.php?id=<?php echo $record->getField('cardId'); ?>">
+              <span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;EDIT</a></td>
+            <td><a onclick='javascript:confirmationDelete($(this)); return false;' 
+              href="deleteCard.php?id=<?php echo $record->getRecordId(); ?>">
+              <span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;DELETE</a></td>
+          </tr>
                 
           <?php       
               }
           }
           ?>
+          
         </table>
       </div>
       <div id="show"></div>

@@ -5,6 +5,7 @@
   date: 06/02/2017
 */
 
+
 // function for cofirmation before detele of student records
 function confirmationDelete(anchor)
 {
@@ -13,12 +14,13 @@ function confirmationDelete(anchor)
       window.location=anchor.attr("href");
 }
 
+
 // function to add new records 
 function addRecord() {
     // get values
-    var name = $("#name").val();
-    var email = $("#email").val();
-    var phone = $("#phone").val();
+    var name = $.trim($("#name").val());
+    var email = $.trim($("#email").val());
+    var phone = $.trim($("#phone").val());
  
     // Add record
     $.post("addRecord.php", {
@@ -26,49 +28,48 @@ function addRecord() {
         email: email,
         phone: phone
     }, function (data, status) {
-        // close the popup
+        // close the popup modal
         $("#add_new_record_modal").modal("hide");
-        
-        //to read the records from database
-        //readRecord();
-        
+
         // clear fields from the popup
         $("#name").val("");
         $("#email").val("");
         $("#phone").val("");
-
+        location.reload(true);
     });
 }
 
-// search the book from database. str is of string type.
-function showResult(str) {
-    if (str.length==0) { 
-        document.getElementById("livesearch").innerHTML="";
-        document.getElementById("livesearch").style.border="0px";
-        return;
-    }
-    if (window.XMLHttpRequest) {
-        // code for IE7+, Firefox, Chrome, Opera, Safari
-        xmlhttp=new XMLHttpRequest();
-    } else {  // code for IE6, IE5
-        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-    }
-    xmlhttp.onreadystatechange=function() {
-        if (this.readyState==4 && this.status==200) {
-          document.getElementById("livesearch").innerHTML=this.responseText;
-          document.getElementById("livesearch").style.border="1px solid #A5ACB2";
+
+// function to filter through book name from html table.
+$(document).ready(function() {
+    $(".search").on("keyup",function(){
+        var searchValue = $(this).val().toLowerCase();
+        $("#myTable tr").each(function(){
+            var lineStr = $(this).text().toLowerCase();
+            if(lineStr.indexOf(searchValue) === -1){
+                $(this).hide();
+            } else {
+                $(this).show();
+            }
+        }); 
+    });
+});
+
+
+// function to filter through book category.
+$(document).ready(function() {
+    var rows = $("table#myTable tr:not(:first-child)");
+
+    $("#select_field").on("change",function(){
+        var selected = this.value;
+        if(selected != "All"){
+            rows.filter("[category="+selected+"]").show();
+            rows.not("[category="+selected+"]").hide();
+
+        } else {
+            rows.show();
         }
-    }
-    xmlhttp.open("GET","livesearch.php?name=" + str, true);
-    xmlhttp.send();
-}
-
-/*
-// READ records
-function readRecord() {
-    $.get("readRecord.php", {}, function (data, status) {
-        $(".records_content").html(data);
     });
-}
+});
 
-*/
+

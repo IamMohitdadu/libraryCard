@@ -13,5 +13,6 @@ header('Content_Type:text/xml');
 include("./config/config.php");
 
 $id = $_GET['id'];
+$cardId = $_GET['cardId'];
 $db->deleteIssuedBook($id);
-header('Location: libraryCard.php?id=26');
+header('Location: libraryCard.php?id='.$cardId);

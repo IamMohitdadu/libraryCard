@@ -65,6 +65,7 @@ if(isset($_POST['issueBook'])) {
     } 
 }
 ?>
+
 <!-- Content Section -->
 <nav class="navbar navbar-default col-md-12">
   <div class="row">
@@ -81,14 +82,14 @@ if(isset($_POST['issueBook'])) {
 <div class="container">
   <ol class="breadcrumb">
     <li><a href="index.php">Home</a></li>
-    <li><a href="#">Library Card</a></li>      
+    <li><a href="">Library Card</a></li>      
   </ol>
-  <!-- content section for student card details.  -->
+  <!-- content section for Library card page -->
   <div class="container col-md-12">
-    <!-- content section for Library card page -->
+
+    <!-- content section for student card details and can edit details.  -->
     <div class="row">
       <div class="col-md-5">
-        <!-- display and can edit details of library card -->
         <form method="post" action="">
           <div class="panel panel-default">
             <div class="panel-heading">Card Details</div><br>
@@ -106,19 +107,13 @@ if(isset($_POST['issueBook'])) {
         </form> 
       </div>
       <div class="col-md-7">
-        <div class="col-md-9">
-          <form>
-            <input type="text" size="50" onkeyup="showResult(this.value)" placeholder="Enter Book Name">
-            <div id="livesearch"></div>
-          </form>
-        </div>
         <div class="col-md-3">
-          <button class="btn btn-success btn-md" data-toggle="modal" data-target="#add_book_modal">All Books</button>
+          <button class="btn btn-primary btn-md btn-block" data-toggle="modal" data-target="#add_book_modal">All Books</button>
         </div>
       </div>
     </div>
-    <!-- content section for 
-     book to the student.  -->
+
+    <!-- content section for issued book to the student.  -->
     <div class="panel panel-default" id="issued_book">
       <div class="panel-heading">Issued Books</div>
       <table  class="table table-striped table-bordered table-hover table-condensed">
@@ -144,7 +139,8 @@ if(isset($_POST['issueBook'])) {
               <td><?php echo $bookRecord->getField('bookData::bookId'); ?></td>
               <td><?php echo $bookRecord->getField('bookData::bookName'); ?></td>
               <td><?php echo $bookRecord->getField('bookData::bookCategory'); ?></td>
-              <td><a href="deleteIssuedBook.php?id=<?php echo $record->getRecordId(); ?>">
+              <td><a onclick='javascript:confirmationDelete($(this)); return false;'
+                href="deleteIssuedBook.php?id=<?php echo $record->getRecordId(); ?>&cardId=<?php echo $id;?>">
                 <span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;Return Book</a></td>   
             </tr>
           <?php  
@@ -166,10 +162,8 @@ if(isset($_POST['issueBook'])) {
 </div>
 <!-- /Content Section -->
 
-
 <!-- Bootstrap Modals -->
-
-<!-- Modal - Add Books -->
+<!-- Search, filter and issue Books to the student  -->
 <div class="modal fade" id="add_book_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -179,37 +173,48 @@ if(isset($_POST['issueBook'])) {
       </div>
       <div class="modal-body">
         <form  method="post" action="" > 
-          <div class="panel panel-default"><br>
-            <table  class="table table-striped table-bordered table-hover table-condensed">
+          <div class="panel panel-default">
+            <span><strong>Search through category:</strong></span>
+            <select id="select_field">
+              <option value="All" selected>All</option>
+              <option value="Hindi">Hindi</option>
+              <option value="English">English</option>
+              <option value="Math">Math</option>
+              <option value="Geography">Geography</option>
+              <option value="Physics">Physics</option>
+              <option value="Chemistry">Chemistry</option>
+            </select>
+            <script type="text/javascript" src="asset/js/script.js"></script>
+            <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            <input type="text" class="form-control search" id="myInput" placeholder="Search Through Names.." >
+            <table  class="table table-striped table-bordered table-hover table-condensed" id="myTable">
               <tr>
                 <th>BOOK ID</th>
                 <th>BOOK NAME</th>
                 <th>BOOK CATEGORY</th>
                 <th>ADD BOOK</th>
               </tr>
-            <?php
-            
-              if(isset($_POST['search'])) {
-                $searchName = $_POST['search'];
-                $bookRecords = $db->findBook('bookData', $searchName);
-              } else { 
+
+              <?php
+
                 //Initializing the database connection
                 $bookRecords = $db->fetchData('bookData');
-              }
-              if($bookRecords) {
-                foreach ($bookRecords as $record) { 
-            ?>
-                <tr>
-                  <td><?php echo $record->getField('bookId'); ?></td>
-                  <td><?php echo $record->getField('bookName'); ?></td>
-                  <td><?php echo $record->getField('bookCategory'); ?></td>               
-                  <td><input type="checkbox" name="check_list[]" value="<?php echo $record->getField('bookId');?>"/></td>
-                </tr>    
+                if($bookRecords) {
+                  foreach ($bookRecords as $record) { 
+              ?>
+
+              <tr category="<?php echo $record->getField('bookCategory'); ?>">
+                <td><?php echo $record->getField('bookId'); ?></td>
+                <td><?php echo $record->getField('bookName'); ?></td>
+                <td><?php echo $record->getField('bookCategory'); ?></td>               
+                <td><input type="checkbox" name="check_list[]" value="<?php echo $record->getField('bookId');?>"/></td>
+              </tr> 
+
               <?php       
                   }
               } 
-              
               ?>
+
             </table>
           </div>
           <div class="modal-footer">

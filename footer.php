@@ -1,3 +1,12 @@
+<?php
+/**
+ * file-name: footer.php
+ * created-by: Mohit Dadu
+ * description: it is the php file used for web pages.
+ * date:03/02/2017
+ */
+?>
+
 
 <!-- Bootstrap JS file -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
