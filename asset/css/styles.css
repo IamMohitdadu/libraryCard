@@ -1,6 +1,9 @@
 body {
     background-image: url("image/bgimage.jpg");
-    background-size: 100% auto;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 }
 
 div .pull-right {
@@ -19,46 +22,10 @@ div #libraryCard {
     font-size: 20px;
 }
 
-div #panel {
-    width: 30%;
+#lbl {
+    text-align: left;
+    padding: 6px;
+    font-family: cambria;
+    font-weight: bold;
+    font-size: 17px;
 }
-
-
-/*
-p {
-    display: block;
-    -webkit-margin-before: 1em;
-    -webkit-margin-after: 1em;
-    -webkit-margin-start: 0px;
-    -webkit-margin-end: 0px;
-}
-
-.name {
-    background-color: lightblue;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    margin-left: 100px;
-    margin-right: 100px;
-}
-
-.email {
-    background-color: lightblue;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    margin-left: 100px;
-    margin-right: 100px;
-}
-
-.id {
-    background-color: lightblue;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    margin-left: 100px;
-    margin-right: 100px;
-}
-
-.name-info{
-	color: red;
-}
-*/
-

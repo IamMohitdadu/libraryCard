@@ -8,10 +8,10 @@
 * date:06/02/2017
 */
 
-header('Content_Type:text/xml');
-
+// including the config file for creating database class object.
 include("./config/config.php");
 
+// checking for receving Id and cardId from library page to delete record from database
 $id = $_GET['id'];
 $cardId = $_GET['cardId'];
 $db->deleteIssuedBook($id);

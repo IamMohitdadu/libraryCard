@@ -28,6 +28,12 @@ active{
     color: #00ff00;
 }
 
+#head{
+    background-color:#2196F3;
+    color:#fff;
+    height:200px;"
+}
+
 #user-type{
     height: 50px;
     width: auto;  

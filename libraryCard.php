@@ -55,7 +55,7 @@ if(isset($_POST['issueBook'])) {
                 $records = $db->issueBook('cardBook', $id, $selectedBook);
             }
             if($records) {
-                $msg = $checked_count."Books Issued ";
+                $msg = $checked_count." Books Issued ";
             } else {
                 $msg = "Failed to Update. Please Try Again....";
             }
@@ -89,7 +89,7 @@ if(isset($_POST['issueBook'])) {
 
     <!-- content section for student card details and can edit details.  -->
     <div class="row">
-      <div class="col-md-5">
+      <div class="col-md-6">
         <form method="post" action="">
           <div class="panel panel-default">
             <div class="panel-heading">Card Details</div><br>
@@ -102,13 +102,19 @@ if(isset($_POST['issueBook'])) {
               <dd><input type="text" name="phone" value="<?php echo $phone; ?>" /></dd><br>
             </dl>
             <input class="btn btn-primary btn-block" type='submit' name='save' id='save' value='save'>
-            <span><?php echo $msg;?></span>
           </div>
         </form> 
       </div>
-      <div class="col-md-7">
-        <div class="col-md-3">
-          <button class="btn btn-primary btn-md btn-block" data-toggle="modal" data-target="#add_book_modal">All Books</button>
+      <div class="well well-sm col-md-4">
+        <div class="col-md-6">
+          <label id="lbl">Issue Book:</label>
+        </div>
+        <div class="col-md-6">
+          <button class="btn btn-primary btn-md btn-block" data-toggle="modal" data-target="#add_book_modal">
+            Search Books</button>
+        </div>
+        <div class="col-md-12">
+          <span><strong><?php echo $msg;?></strong></span>
         </div>
       </div>
     </div>
@@ -117,7 +123,7 @@ if(isset($_POST['issueBook'])) {
     <div class="panel panel-default" id="issued_book">
       <div class="panel-heading">Issued Books</div>
       <table  class="table table-striped table-bordered table-hover table-condensed">
-        <tr>
+        <tr class="info">
           <th>BOOK ID</th>
           <th>BOOK NAME</th>
           <th>BOOK CATEGORY</th>
@@ -155,7 +161,7 @@ if(isset($_POST['issueBook'])) {
               $msg = "No Record Found";
           }
         ?>
-      </table><span><strong><?php echo $msg;?></strong></span>
+      </table>
     </div>
     
   </div>
@@ -174,21 +180,27 @@ if(isset($_POST['issueBook'])) {
       <div class="modal-body">
         <form  method="post" action="" > 
           <div class="panel panel-default">
-            <span><strong>Search through category:</strong></span>
-            <select id="select_field">
-              <option value="All" selected>All</option>
-              <option value="Hindi">Hindi</option>
-              <option value="English">English</option>
-              <option value="Math">Math</option>
-              <option value="Geography">Geography</option>
-              <option value="Physics">Physics</option>
-              <option value="Chemistry">Chemistry</option>
-            </select>
-            <script type="text/javascript" src="asset/js/script.js"></script>
-            <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
-            <input type="text" class="form-control search" id="myInput" placeholder="Search Through Names.." >
+            <div class="well col-md-12">
+              <div class="col-md-6">
+                <div class="input-group">
+                  <span class="input-group-addon glyphicon glyphicon-search"></span>
+                  <input type="text" class="form-control search" id="myInput" placeholder="Search Book Names.." >
+                </div>
+              </div>
+              <div class="col-md-6">
+                <select id="select_field" class="form-control">
+                  <option value="All" selected>All</option>
+                  <option value="Hindi">Hindi</option>
+                  <option value="English">English</option>
+                  <option value="Math">Math</option>
+                  <option value="Geography">Geography</option>
+                  <option value="Physics">Physics</option>
+                  <option value="Chemistry">Chemistry</option>
+                </select>
+              </div>
+            </div>
             <table  class="table table-striped table-bordered table-hover table-condensed" id="myTable">
-              <tr>
+              <tr class="info">
                 <th>BOOK ID</th>
                 <th>BOOK NAME</th>
                 <th>BOOK CATEGORY</th>

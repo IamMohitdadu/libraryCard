@@ -40,7 +40,7 @@ function addRecord() {
 }
 
 
-// function to filter through book name from html table.
+// function to search book through book name from html table.
 $(document).ready(function() {
     $(".search").on("keyup",function(){
         var searchValue = $(this).val().toLowerCase();

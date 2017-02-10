@@ -50,7 +50,7 @@ include("./config/config.php");
       <div class="panel panel-default">
         <div class="panel-heading">Card Details</div>
         <table  class="table table-striped table-bordered table-hover table-condensed">
-          <tr>
+          <tr class="info">
             <th>CARD ID</th>
             <th>NAME</th>
             <th>EMAIL ADDRESS</th>

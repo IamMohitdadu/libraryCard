@@ -8,7 +8,8 @@
 
 // connecting to the Filemaker Api
 require_once ('filemakerapi/FileMaker.php');
-	
+
+// database class for performing CRUD operations.	
 class Database {
 
     var $database;
@@ -40,33 +41,37 @@ class Database {
     // function to fetch all data from database
     public function fetchData($layout)
     {   
-        if(!$this->connDB()) {
+        if (!$this->connDB()) {
             return false;
         }
 
         $request = $this->connection->newFindAllCommand($layout);
         $result = $request->execute();
         $records = $result->getRecords();
+
         if (FileMaker::isError($records)) {
             echo $records->getMessage();
             return false;
         } 
+
         return $result->getRecords();
     }
     
     // to find the particular data from database
     public function findCard($layout, $id)
     {   
-        if(!$this->connDB()) {
+        if (!$this->connDB()) {
             return false;
         }
 
         $request = $this->connection->newFindCommand($layout);
         $request->addFindCriterion('cardId', $id);
         $result = $request->execute();
+
         if (FileMaker::isError($result)) {
             return false;
         } 
+
         $records = $result->getRecords();
         if (FileMaker::isError($records)) {
             return false;
@@ -77,7 +82,7 @@ class Database {
     // to add new data into the card database
     public function addCard($layout, $name, $email, $phone)
     {   
-        if(!$this->connDB()) {
+        if (!$this->connDB()) {
             return false;
         }
 
@@ -97,21 +102,19 @@ class Database {
     // function to delete the student data from database
     public function deleteCard($dataId)
     {   
-        if(!$this->connDB()) {
+        if (!$this->connDB()) {
             return false;
         }
 
         $id = $dataId;
         $deleteRecord = $this->connection->newDeleteCommand('cardData', $id);
         $result = $deleteRecord->execute();
-        header("Location: index.php");
     }
 
-    // to edit the record 
+    // to edit the student data into the database
+    //$layout, $name, $email are of string and $id, $phone are of integer type.
     public function editRecord($layout, $id, $name, $email, $phone)
     {
-        //$layout, $name, $email are of string and $id, $phone are of integer type.
-
         //checking the connection with the database.
         if(!$this->connDB()) {
             return false;
@@ -125,8 +128,7 @@ class Database {
             return false;
         } else {
             $records = $result->getRecords();
-            
-            //  fetching record from database
+            //  storing data record into database
             foreach ($records as $record) {
                 $record->setField('studentName', $name);
                 $record->setField('email', $email);
@@ -162,14 +164,15 @@ class Database {
         $record = $this->connection->createRecord($layout);
         $record->setField('cardId', $cardId);
         $record->setField('bookId', $bookId);
-        $result = $record->commit();            
+        $result = $record->commit();   
+
         if (FileMaker::isError($result)) { 
             return false;
         } else {
             return true;
         }
     }
-    
-}
+
+}// end of Database class
 
 
