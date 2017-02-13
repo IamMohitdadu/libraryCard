@@ -5,6 +5,63 @@
   date: 06/02/2017
 */
 
+// function to add new records 
+function addRecord(event) {
+    // get values
+    var name = $.trim($("#name").val());
+    var email = $.trim($("#email").val());
+    var phone = $.trim($("#phone").val());
+    var errors = true;
+
+    // validate the inputs provided by the user
+    if(name.length < 2) {
+        $("#name_error").html("Name must be more than 3 characters");
+        $("#name_error").show();
+        errors =  false;
+    } else {
+        $("#name_error").hide();
+        errors =  true;
+    }
+
+    var pattern = new RegExp(/^[+a-zA-Z0-9._-]+@[a-zA-Z0-9]+\.[a-zA-Z]{2,4}?$/);
+
+    if(pattern.test(email)) {
+        $("#email_error").hide();
+        error = true;
+    } else {
+        $("#email_error").html(" Invalid email address.");
+        $("#email_error").show();
+        error = false;
+    }
+
+    if(phone.length != 10) {
+        $("#phone_error").html("phone number must be of 10 digits");
+        $("#phone_error").show();
+        errors =  false;
+    } else {
+        $("#phone_error").hide();
+        errors = true;
+    }
+
+    // storing the data after validation into the database.
+    if (errors) {
+        // Add record
+        $.post("addRecord.php", {
+            name: name,
+            email: email,
+            phone: phone
+        }, function (data, status) {
+            // close the popup modal
+            $("#add_new_record_modal").modal("hide");
+
+            // clear fields from the popup
+            $("#name").val("");
+            $("#email").val("");
+            $("#phone").val("");
+            location.reload(true);
+        });
+    }
+}
 
 // function for cofirmation before detele of student records
 function confirmationDelete(anchor)
@@ -13,32 +70,6 @@ function confirmationDelete(anchor)
    if(conf)
       window.location=anchor.attr("href");
 }
-
-
-// function to add new records 
-function addRecord() {
-    // get values
-    var name = $.trim($("#name").val());
-    var email = $.trim($("#email").val());
-    var phone = $.trim($("#phone").val());
- 
-    // Add record
-    $.post("addRecord.php", {
-        name: name,
-        email: email,
-        phone: phone
-    }, function (data, status) {
-        // close the popup modal
-        $("#add_new_record_modal").modal("hide");
-
-        // clear fields from the popup
-        $("#name").val("");
-        $("#email").val("");
-        $("#phone").val("");
-        location.reload(true);
-    });
-}
-
 
 // function to search book through book name from html table.
 $(document).ready(function() {

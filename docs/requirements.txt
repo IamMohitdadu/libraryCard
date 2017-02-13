@@ -3,7 +3,7 @@ Library Card (5days)
 1. Should have 2 sections Card and Books (create inside DB)
 
 2. Have 2 screens ( Home, Library Card)
-   i. Home - List of cards with View/Edit/Delete and an ADD button for new Library Card.
+   i. Home - List of cards with Edit/Delete and an ADD button for new Library Card.
    ii. Library Card - Student Name, total books + list of books added to that card 
 	   (note each books row will have a delete button to remove from the card).
 

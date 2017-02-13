@@ -93,6 +93,7 @@ class Database {
         $result = $record->commit();
         
         if (FileMaker::isError($result)) { 
+            error_log("unable to add-".$result->getMessage(), 3, "errors.txt");
             return false;
         } else {
             return true;

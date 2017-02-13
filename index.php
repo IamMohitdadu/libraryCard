@@ -45,47 +45,48 @@ include("./config/config.php");
           </div>
         </div>
       </div>
-
+      <div class="table-responsive">
       <!-- To display the list of students card -->
-      <div class="panel panel-default">
-        <div class="panel-heading">Card Details</div>
-        <table  class="table table-striped table-bordered table-hover table-condensed">
-          <tr class="info">
-            <th>CARD ID</th>
-            <th>NAME</th>
-            <th>EMAIL ADDRESS</th>
-            <th>PHONE NUMBER</th>
-            <th colspan="3"><center>Action</center></th>
-          </tr>
+        <div class="panel panel-default">
+          <div class="panel-heading">Card Details</div>
+          <table  class="table table-striped table-bordered table-hover table-condensed">
+            <tr class="info">
+              <th>CARD ID</th>
+              <th>NAME</th>
+              <th>EMAIL ADDRESS</th>
+              <th>PHONE NUMBER</th>
+              <th colspan="3"><center>Action</center></th>
+            </tr>
 
-          <?php
+            <?php
 
-            //Initializing the database connection
-            $records = $db->fetchData('cardData');
+              //Initializing the database connection
+              $records = $db->fetchData('cardData');
 
-            if($records) {
-              foreach ($records as $record) { 
-          ?>
+              if($records) {
+                foreach ($records as $record) { 
+            ?>
 
-          <tr>
-            <td><?php echo $record->getField('cardId'); ?></td>
-            <td><?php echo $record->getField('studentName'); ?></td>
-            <td><?php echo $record->getField('email'); ?></td>
-            <td><?php echo $record->getField('phoneNo'); ?></td>
+            <tr>
+              <td><?php echo $record->getField('cardId'); ?></td>
+              <td><?php echo $record->getField('studentName'); ?></td>
+              <td><?php echo $record->getField('email'); ?></td>
+              <td><?php echo $record->getField('phoneNo'); ?></td>
+              
+              <td><a href="libraryCard.php?id=<?php echo $record->getField('cardId'); ?>">
+                <span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;EDIT</a></td>
+              <td><a onclick='javascript:confirmationDelete($(this)); return false;' 
+                href="deleteCard.php?id=<?php echo $record->getRecordId(); ?>">
+                <span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;DELETE</a></td>
+            </tr>
+                  
+            <?php       
+                }
+            }
+            ?>
             
-            <td><a href="libraryCard.php?id=<?php echo $record->getField('cardId'); ?>">
-              <span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;EDIT</a></td>
-            <td><a onclick='javascript:confirmationDelete($(this)); return false;' 
-              href="deleteCard.php?id=<?php echo $record->getRecordId(); ?>">
-              <span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;DELETE</a></td>
-          </tr>
-                
-          <?php       
-              }
-          }
-          ?>
-          
-        </table>
+          </table>
+        </div>
       </div>
       <div id="show"></div>
     </div>
@@ -104,28 +105,31 @@ include("./config/config.php");
                 <h4 class="modal-title" id="myModalLabel">Add New Card</h4>
             </div>
 
-            <form method="post" action="">
+            <form id="add_card" method="post" action="">
               <div class="modal-body">
                 <div class="form-group">
                     <label for="name">Student Name</label>
-                    <input type="text" id="name" placeholder="Student Name" class="form-control"/>
+                    <input type="text" id="name" name="name" placeholder="Student Name" class="form-control" />
+                    <span class="error" id="name_error" ></span>
                 </div>
 
                 <div class="form-group">
                     <label for="email">Email Address</label>
-                    <input type="email" id="email" placeholder="Email Address" class="form-control"/>
+                    <input type="email" id="email" name="email" placeholder="Email Address" class="form-control" />
+                    <span class="error" id="email_error" ></span>
                 </div>
 
                 <div class="form-group">
                     <label for="phone">Phone Number</label>
-                    <input type="number" id="phone" placeholder="Phone Number" class="form-control"/>
+                    <input type="number" id="phone" name="phone" placeholder="Phone Number" class="form-control" />
+                    <span class="error" id="phone_error" ></span>
                 </div>
 
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 <!-- addRecord method defined in script.js file -->
-                <button type="button" class="btn btn-primary" onclick="addRecord()">Add Record</button>
+                <button type="button" class="btn btn-primary" onclick="addRecord(this)">Add Record</button>
               </div>
             </form>
         </div>

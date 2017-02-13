@@ -26,7 +26,7 @@ if (isset($_GET['id'])) {
             $phone = $record->getField('phoneNo');
         }
     } else {
-        $msg = "No Record Found";
+        $errmsg = "No Record Found";
     }
 }
 
@@ -106,13 +106,8 @@ if(isset($_POST['issueBook'])) {
         </form> 
       </div>
       <div class="well well-sm col-md-4">
-        <div class="col-md-6">
-          <label id="lbl">Issue Book:</label>
-        </div>
-        <div class="col-md-6">
-          <button class="btn btn-primary btn-md btn-block" data-toggle="modal" data-target="#add_book_modal">
-            Search Books</button>
-        </div>
+        <button class="btn btn-primary btn-md btn-block" data-toggle="modal" data-target="#add_book_modal">
+          Issue Books</button>
         <div class="col-md-12">
           <span><strong><?php echo $msg;?></strong></span>
         </div>
@@ -224,7 +219,7 @@ if(isset($_POST['issueBook'])) {
 
               <?php       
                   }
-              } 
+                } 
               ?>
 
             </table>
@@ -244,4 +239,4 @@ if(isset($_POST['issueBook'])) {
 <?php 
   // include footer
   include_once 'footer.php';
-  ?>
+?>
