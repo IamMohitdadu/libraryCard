@@ -1,4 +1,3 @@
-
 For HTML, CSS, Javascript, google style guide is being followed-
 
 https://google.github.io/styleguide/htmlcssguide.xml

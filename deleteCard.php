@@ -15,6 +15,7 @@ include("./config/config.php");
 if (isset($_GET['id'])) {
 	$id = $_GET['id'];
 
+	// checking and deleting data through classes 
 	$db->deleteCard($id);
 	header("Location: index.php");
 }

@@ -1,14 +1,14 @@
- <?php
-  
+<?php
+
 /**
- * file-name: index.php
- * created-by: Mohit Dadu
- * description: it is the php file home page to display and add library cards.
- * date:03/02/2017
- */
+* file-name: index.php
+* created-by: Mohit Dadu
+* description: it is the php file home page to display and add library cards.
+* date:03/02/2017
+*/
 
 $pageTitle = "home";
-include_once 'header.php';
+include_once './include/header.php';
 
 // to connect the database
 include("./config/config.php");
@@ -19,7 +19,7 @@ include("./config/config.php");
 <nav class="navbar navbar-default col-md-12">
   <div class="row">
     <div class="col-md-3">
-      <img src="./asset/images/logo.png" alt="logo" height="100px" width="120px">
+      <img src="./asset/css/image/logo.png" alt="logo" height="100px" width="120px">
     </div>
     <div class="col-md-7">
       <div class="container-fluid header text-center">
@@ -84,7 +84,7 @@ include("./config/config.php");
                 }
             }
             ?>
-            
+
           </table>
         </div>
       </div>
@@ -99,40 +99,51 @@ include("./config/config.php");
 <!-- Modal - Add New card -->
 <div class="modal fade" id="add_new_record_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Add New Card</h4>
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Add New Card</h4>
+        </div>
+
+        <form id="add_card" class="form-horizontal" method="post" action="">
+          <div class="modal-body ">
+            <div class="form-group">
+              <label class="col-md-3" for="name">Student Name</label>
+              <div class="col-md-9">
+                <input type="text" id="name" name="name" placeholder="Student Name" class="form-control" />
+              </div>
+              <div class="col-md-12">
+                <span class="error" id="name_error" ></span>
+              </div>
+            </div>
+            <!-- content for add book  -->
+            <div class="form-group">
+              <label class="col-md-3" for="email">Email Address</label>
+              <div class="col-md-9">
+                <input type="email" id="email" name="email" placeholder="Email Address" class="form-control" />
+              </div>
+              <div class="col-md-12">
+                <span class="error" id="email_error" ></span>
+              </div>
             </div>
 
-            <form id="add_card" method="post" action="">
-              <div class="modal-body">
-                <div class="form-group">
-                    <label for="name">Student Name</label>
-                    <input type="text" id="name" name="name" placeholder="Student Name" class="form-control" />
-                    <span class="error" id="name_error" ></span>
-                </div>
-
-                <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <input type="email" id="email" name="email" placeholder="Email Address" class="form-control" />
-                    <span class="error" id="email_error" ></span>
-                </div>
-
-                <div class="form-group">
-                    <label for="phone">Phone Number</label>
-                    <input type="number" id="phone" name="phone" placeholder="Phone Number" class="form-control" />
-                    <span class="error" id="phone_error" ></span>
-                </div>
-
+            <div class="form-group">
+              <label class="col-md-3" for="phone">Phone Number</label>
+              <div class="col-md-9">
+                <input type="number" id="phone" name="phone" placeholder="Phone Number" class="form-control" />
               </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <!-- addRecord method defined in script.js file -->
-                <button type="button" class="btn btn-primary" onclick="addRecord(this)">Add Record</button>
+              <div class="col-md-12">
+                <span class="error" id="phone_error" ></span>
               </div>
-            </form>
-        </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <!-- addRecord method defined in libraryCard.js file -->
+            <button type="button" class="btn btn-primary" onclick="addRecord(this)">Add Record</button>
+          </div>
+        </form>
+      </div>
     </div>
 </div>
 <!-- // Modal -->
@@ -140,5 +151,5 @@ include("./config/config.php");
 
 <?php 
   // include footer
-  include_once 'footer.php';
+  include_once './include/footer.php';
   ?>

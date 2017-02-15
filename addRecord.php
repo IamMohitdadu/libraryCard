@@ -9,16 +9,12 @@
 */
 
 if (isset($_POST['name']) && isset($_POST['email']) && isset($_POST['phone'])) {
+  
     // include Database connection file 
     include("./config/config.php");
 
-    // get values 
-    $name = $_POST['name'];
-    $email = $_POST['email'];
-    $phone = $_POST['phone'];
-    
-    // adding data to the card data 
-    $db->addCard('cardData', $name, $email, $phone);
+    // adding data to the cardData table into the database. 
+    $db->addCard('cardData', $_POST['name'], $_POST['email'], $_POST['phone']);
 }
 
 ?>

@@ -1,5 +1,5 @@
 <?php
-  /**
+/**
 * Name: config.php
 * Use For: Employee Management Portal
 * Created By: Mohit Dadu
@@ -8,11 +8,15 @@
 
 // connecting to the database class
 require_once ('dbclass.php');
-	
+
+// creating instances for database connecting parameters.
 $database = 'libraryCard';
 $host = '172.16.9.62';
 $username = 'admin';
 $password = 'Mohit@249d';
 
+// creating object for Database class defined in dbclass.php
 $db = new Database();
+
+// initializing the variables into the database class
 $db->initDB($database, $host, $username, $password);

@@ -16,6 +16,6 @@
 <script type="text/javascript" src="asset/vendors/js/bootstrap.js"></script>
 
 <!-- Custom JS file -->
-<script type="text/javascript" src="asset/js/script.js"></script>
+<script type="text/javascript" src="asset/js/libraryCard.js"></script>
 </body>
 </html>

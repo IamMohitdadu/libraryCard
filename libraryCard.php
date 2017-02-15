@@ -8,7 +8,7 @@
 */
 
 $pageTitle = "home";
-include_once 'header.php';
+include_once './include/header.php';
 
 // to connect the database
 include("./config/config.php");
@@ -32,15 +32,39 @@ if (isset($_GET['id'])) {
 
 // to save the updated student details
 if(isset($_POST['save'])) {
+    $err = true;
     $name = $_POST['name'];
     $email = $_POST['email'];
     $phone = $_POST['phone'];
-    $records = $db->editRecord('cardData', $id, $name, $email, $phone);
+
+    $name = filter_var($name, FILTER_SANITIZE_STRING);
+    $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+    $phone = filter_var($phone, FILTER_VALIDATE_INT);
     
-    if($records){
-        $msg = "Record Updated Successfully ";
+    // Validate e-mail
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
+        $err = false;
     } else {
-        $msg = "Failed to Update. Please Try Again....";
+        $err = true;
+        $msg = "please enter valid email address";
+    }
+    
+    // validate phone number
+    if ($phone && strlen($phone) === 10) {
+        $err = false;
+    } else {
+        $err = true;
+        $msg = "please enter 10 digit mobile number. Don't include +91/0";
+    }
+    
+    if (!$err) {
+      $records = $db->editRecord('cardData', $id, $name, $email, $phone);
+      
+      if($records){
+          $msg = "Record Updated Successfully ";
+      } else {
+          $msg = "Failed to Update. Please Try Again....";
+      }
     }
 }
 
@@ -70,7 +94,7 @@ if(isset($_POST['issueBook'])) {
 <nav class="navbar navbar-default col-md-12">
   <div class="row">
     <div class="col-md-3">
-      <img src="./asset/images/logo.png" alt="logo" height="100px" width="120px">
+      <img src="./asset/css/image/logo.png" alt="logo" height="100px" width="120px">
     </div>
     <div class="col-md-7">
       <div class="container-fluid header text-center">
@@ -114,6 +138,13 @@ if(isset($_POST['issueBook'])) {
       </div>
     </div>
 
+   <?php
+      //Initializing the database connection
+      $records = $db->findCard('cardBook', $id);
+      $countBook = 0;
+      if($records) {
+    ?>
+
     <!-- content section for issued book to the student.  -->
     <div class="panel panel-default" id="issued_book">
       <div class="panel-heading">Issued Books</div>
@@ -125,40 +156,35 @@ if(isset($_POST['issueBook'])) {
           <th>RETURN BOOK</th>
         </tr>
         <?php
-          //Initializing the database connection
-          $records = $db->findCard('cardBook', $id);
-          $countBook = 0;
-          if($records) {
-              foreach ($records as $record) { 
-                  $bookRecords = $record->getRelatedSet('bookData');
-                  if (FileMaker::isError($bookRecords)) {
-                  } else { 
-                      foreach ($bookRecords as $bookRecord) {
-                          $bookId = $bookRecord->getField('bookData::bookId');
+            foreach ($records as $record) { 
+                $bookRecords = $record->getRelatedSet('bookData');
+                if (FileMaker::isError($bookRecords)) {
+                } else { 
+                    foreach ($bookRecords as $bookRecord) {
+                        $bookId = $bookRecord->getField('bookData::bookId');
         ?>
-            <tr>
-              <td><?php echo $bookRecord->getField('bookData::bookId'); ?></td>
-              <td><?php echo $bookRecord->getField('bookData::bookName'); ?></td>
-              <td><?php echo $bookRecord->getField('bookData::bookCategory'); ?></td>
-              <td><a onclick='javascript:confirmationDelete($(this)); return false;'
-                href="deleteIssuedBook.php?id=<?php echo $record->getRecordId(); ?>&cardId=<?php echo $id;?>">
-                <span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;Return Book</a></td>   
-            </tr>
-          <?php  
-                     }
-                  }     
-                  $countBook++;
-              }
-              if ($countBook == 0){
-                $msg = "no record found";
-              }
-          } else { 
-              $msg = "No Record Found";
-          }
+
+        <tr>
+          <td><?php echo $bookRecord->getField('bookData::bookId'); ?></td>
+          <td><?php echo $bookRecord->getField('bookData::bookName'); ?></td>
+          <td><?php echo $bookRecord->getField('bookData::bookCategory'); ?></td>
+          <td><a onclick='javascript:confirmationDelete($(this)); return false;'
+            href="deleteIssuedBook.php?id=<?php echo $record->getRecordId(); ?>&cardId=<?php echo $id;?>">
+            <span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;Return Book</a></td>   
+        </tr>
+
+        <?php  
+                   }
+                }     
+                $countBook++;
+            }
+        } else { 
+            echo "<span class='well'> No Book Issued Yet.</span>";
+        }
         ?>
+
       </table>
     </div>
-    
   </div>
 </div>
 <!-- /Content Section -->
@@ -176,22 +202,31 @@ if(isset($_POST['issueBook'])) {
         <form  method="post" action="" > 
           <div class="panel panel-default">
             <div class="well col-md-12">
-              <div class="col-md-6">
-                <div class="input-group">
+              <div class="col-md-5">
+                <div class="col-md-12">
+                  <label>Search through Name:</label>
+                </div>
+                <div class="input-group col-md-12">
                   <span class="input-group-addon glyphicon glyphicon-search"></span>
                   <input type="text" class="form-control search" id="myInput" placeholder="Search Book Names.." >
                 </div>
               </div>
-              <div class="col-md-6">
-                <select id="select_field" class="form-control">
-                  <option value="All" selected>All</option>
-                  <option value="Hindi">Hindi</option>
-                  <option value="English">English</option>
-                  <option value="Math">Math</option>
-                  <option value="Geography">Geography</option>
-                  <option value="Physics">Physics</option>
-                  <option value="Chemistry">Chemistry</option>
-                </select>
+              <label class="col-md-2">OR</label>
+              <div class="col-md-5">
+                <div class="col-md-12">
+                  <label>Through Category</label>
+                </div>
+                <div class="col-md-12">
+                  <select id="select_field" class="form-control">
+                    <option value="All" selected>All</option>
+                    <option value="Hindi">Hindi</option>
+                    <option value="English">English</option>
+                    <option value="Math">Math</option>
+                    <option value="Geography">Geography</option>
+                    <option value="Physics">Physics</option>
+                    <option value="Chemistry">Chemistry</option>
+                  </select>
+                </div>
               </div>
             </div>
             <table  class="table table-striped table-bordered table-hover table-condensed" id="myTable">
@@ -235,8 +270,7 @@ if(isset($_POST['issueBook'])) {
 </div>
 <!-- // Modal -->
 
-
 <?php 
   // include footer
-  include_once 'footer.php';
+  include_once './include/footer.php';
 ?>
