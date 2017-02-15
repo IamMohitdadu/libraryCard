@@ -64,7 +64,7 @@ function addRecord(event) {
             $("#phone").val("");
             location.reload(true);
         });
-    } else { errmsg = 'email already exists';}
+    }
 }
 
 /* function for cofirmation before detele of student records */

@@ -59,6 +59,11 @@ include("./config/config.php");
             </tr>
 
             <?php
+              // creating object for Database class defined in dbclass.php
+              $db = new Database();
+
+              // initializing the variables into the database class
+              $db->initDB($database, $host, $username, $password);
 
               //Initializing the database connection
               $records = $db->fetchData('cardData');

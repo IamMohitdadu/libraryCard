@@ -152,8 +152,8 @@ class Database {
                 $record->setField('email', $email);
                 $record->setField('phoneNo', $phone);
                 $record->commit();
-                return true;
             }
+            return true;
         }
     } // end of function editRecord.
 

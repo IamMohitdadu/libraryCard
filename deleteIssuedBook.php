@@ -14,5 +14,12 @@ include("./config/config.php");
 // receving cardBook Id and cardId from library page to delete record from database
 $id = $_GET['id'];
 $cardId = $_GET['cardId'];
+
+// creating object for Database class defined in dbclass.php
+$db = new Database();
+
+// initializing the variables into the database class
+$db->initDB($database, $host, $username, $password);
+// to remove the issues book
 $db->deleteIssuedBook($id);
 header('Location: libraryCard.php?id='.$cardId);

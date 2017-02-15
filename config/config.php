@@ -14,9 +14,3 @@ $database = 'libraryCard';
 $host = '172.16.9.62';
 $username = 'admin';
 $password = 'Mohit@249d';
-
-// creating object for Database class defined in dbclass.php
-$db = new Database();
-
-// initializing the variables into the database class
-$db->initDB($database, $host, $username, $password);

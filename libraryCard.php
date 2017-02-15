@@ -18,6 +18,13 @@ $msg = "";
 // check for getting data from home page
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
+    // creating object for Database class defined in dbclass.php
+    $db = new Database();
+
+    // initializing the variables into the database class
+    $db->initDB($database, $host, $username, $password);
+
+    // find the card into the database
     $records = $db->findCard('cardData', $id);
     if($records) {
         foreach ($records as $record) { 
@@ -58,6 +65,14 @@ if(isset($_POST['save'])) {
     }
     
     if (!$err) {
+
+      // creating object for Database class defined in dbclass.php
+      $db = new Database();
+
+      // initializing the variables into the database class
+      $db->initDB($database, $host, $username, $password);
+
+      // edit the student details 
       $records = $db->editRecord('cardData', $id, $name, $email, $phone);
       
       if($records){
@@ -74,7 +89,13 @@ if(isset($_POST['issueBook'])) {
         // Counting number of checked checkboxes.
         $checked_count = count($_POST['check_list']);
         if ($checked_count <= 4) {
-              // Loop to store and display values of individual checked checkbox.
+            // creating object for Database class defined in dbclass.php
+            $db = new Database();
+
+            // initializing the variables into the database class
+            $db->initDB($database, $host, $username, $password);
+
+            // Loop to store and display values of individual checked checkbox.
             foreach($_POST['check_list'] as $selectedBook) {
                 $records = $db->issueBook('cardBook', $id, $selectedBook);
             }
